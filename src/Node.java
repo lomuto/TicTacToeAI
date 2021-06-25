@@ -110,7 +110,7 @@ public class Node {
         }
         int worstPoint = 10;
         for(Node nextAction : node.possibleAction) {
-            worstPoint = Integer.max(worstPoint,getBestAction(nextAction,turn));
+            worstPoint = Integer.min(worstPoint,getBestAction(nextAction,turn));
         }
         node.point = worstPoint;
         return worstPoint;
