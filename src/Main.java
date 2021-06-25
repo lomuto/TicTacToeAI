@@ -10,56 +10,65 @@ public class Main {
     public static void main(String[] args) throws IOException {
         init();
 
-        Node TicTacToeAI = new Node(MAP, 0, ai);
+        Node TicTacToeAI;
+        if (user == 'O') {
+            TicTacToeAI = new Node(MAP, 0, user);
+        } else {
+            TicTacToeAI = new Node(MAP, 0, ai);
+        }
 
         // 제너레이터가 O를 받으면 작동안함
         // user로 X를 받으면 잘 작동함. 해결할것
-        Node.generatePossibleAction(TicTacToeAI,ai);
-
-//        for(Node node : TicTacToeAI.possibleAction) {
-//            for (int i = 0; i < 3; i++) {
-//                for (int j = 0; j < 3; j++) {
-//                    System.out.printf("%c ",node.map[i][j]);
-//                }
-//                System.out.println();
-//            }
-//            System.out.println();
-//        }
+        Node.generatePossibleAction(TicTacToeAI, ai);
 
         char currTurn = user == 'O' ? user : ai;
         int turn = 1;
-        while(turn < 9){
-            renderMap();
+        while (turn < 9) {
             int r;
             int c;
-            if(currTurn == user) {
+            if (currTurn == user) {
+                renderMap();
                 Scanner scanner = new Scanner(System.in);
-                while(true) {
+                while (true) {
                     System.out.println("Choose coordinate. ex) `2 1`");
                     r = scanner.nextInt();
                     c = scanner.nextInt();
-                    if(r > -1 && c > -1 && r < 3 && c < 3) {
+                    if (MAP[r][c] != 0) {
+                        System.out.println("Invalid spot");
+                        continue;
+                    }
+                    if (r > -1 && c > -1 && r < 3 && c < 3) {
                         currTurn = ai;
                         break;
                     }
-                    System.out.println("Invalid input as r: "+ r + " c: " + c);
+                    System.out.println("Invalid input as r: " + r + " c: " + c);
                 }
                 MAP[r][c] = user;
-                // ai 업데이트안됨
-                for(Node next : TicTacToeAI.possibleAction) {
-                    System.out.println("DEBUG: "+next.map[r][c]);
-                    if(next.map[r][c] != 0) {
-                        System.out.println("DEBUG");
+
+                for (Node next : TicTacToeAI.possibleAction) {
+                    if (next.map[r][c] != 0) {
                         TicTacToeAI = next;
                         break;
                     }
                 }
-            }else {
-                int nextPoint = Node.getBestAction(TicTacToeAI,ai);
+            } else {
+                int nextPoint = Node.getBestAction(TicTacToeAI, ai);
+                // 다음 경우의 수를 전부 확인해보니 value 평가가 잘못됨
+                // 원인 찾아서 수정하기
                 for(Node next : TicTacToeAI.possibleAction) {
-                    if(next.point == nextPoint) {
+                    System.out.println("Curr option: point "+next.point);
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            System.out.printf("%c ", next.map[i][j]);
+                        }
+                        System.out.println();
+                    }
+                    System.out.println();
+                }
+                for (Node next : TicTacToeAI.possibleAction) {
+                    if (next.point == nextPoint) {
                         TicTacToeAI = next;
-                        Node.deepCpyMap(MAP,TicTacToeAI.map);
+                        Node.deepCpyMap(MAP, TicTacToeAI.map);
                         currTurn = user;
                         break;
                     }
@@ -99,15 +108,15 @@ public class Main {
         MAP = new char[3][3];
         String buffer;
         Scanner scanner = new Scanner(System.in);
-        while(true) {
+        while (true) {
             System.out.println("Choose player: `O` or `X`");
             buffer = scanner.next();
-            if(buffer.length() != 1) {
-                System.out.println("Invalid input of size "+buffer.length());
+            if (buffer.length() != 1) {
+                System.out.println("Invalid input of size " + buffer.length());
                 continue;
             }
             user = buffer.charAt(0);
-            if(user == 'O' || user == 'X') {
+            if (user == 'O' || user == 'X') {
                 ai = user == 'O' ? 'X' : 'O';
                 clearConsole();
                 return;
@@ -117,8 +126,8 @@ public class Main {
     }
 
     public static void renderMap() {
-        for(int i=0; i<3; i++) {
-            for(int j=0; j<3; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 System.out.printf("%c ", MAP[i][j]);
             }
             System.out.println();
