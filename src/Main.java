@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static char[][] MAP;
@@ -32,12 +33,11 @@ public class Main {
             int r;
             int c;
             if(currTurn == user) {
-                byte[] input = new byte[3];
+                Scanner scanner = new Scanner(System.in);
                 while(true) {
                     System.out.println("Choose coordinate. ex) `2 1`");
-                    System.in.read(input,0,3);
-                    r = new String(input).charAt(0) - '0';
-                    c = new String(input).charAt(2)- '0';
+                    r = scanner.nextInt();
+                    c = scanner.nextInt();
                     if(r > -1 && c > -1 && r < 3 && c < 3) {
                         currTurn = ai;
                         break;
@@ -97,16 +97,22 @@ public class Main {
 
     public static void init() throws IOException {
         MAP = new char[3][3];
-        byte[] input = new byte[1];
+        String buffer;
+        Scanner scanner = new Scanner(System.in);
         while(true) {
             System.out.println("Choose player: `O` or `X`");
-            System.in.read(input,0,1);
-            user = new String(input).charAt(0);
+            buffer = scanner.next();
+            if(buffer.length() != 1) {
+                System.out.println("Invalid input of size "+buffer.length());
+                continue;
+            }
+            user = buffer.charAt(0);
             if(user == 'O' || user == 'X') {
                 ai = user == 'O' ? 'X' : 'O';
                 clearConsole();
                 return;
             }
+            System.out.println("Only one character 'O' or 'X' allowed");
         }
     }
 
