@@ -54,6 +54,9 @@ public class Node {
         }
     }
 
+    // 각 node마다 어디에 수를 뒀는지 chooseR,C에 저장
+    // 이걸 토대로 해당 좌표에서 8방향 탐색 후 빙고가 되는지 확인할 수 있음
+    // 틱택토에서는 3x3 배열이라 맵 전체를 돌았지만, 오목같은 경우는 위의 내용으로 하면 더 빠름
     public static char evaluateMap(char[][] map) {
         char ret = 0;
         // 맵 전체를 돕니다.
