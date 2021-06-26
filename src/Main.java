@@ -23,7 +23,7 @@ public class Main {
 
         char currTurn = user == 'O' ? user : ai;
         int turn = 1;
-        while (turn < 9) {
+        while (turn < 10) {
             int r;
             int c;
             if (currTurn == user) {
@@ -53,18 +53,6 @@ public class Main {
                 }
             } else {
                 int nextPoint = Node.getBestAction(TicTacToeAI, ai);
-                // 다음 경우의 수를 전부 확인해보니 value 평가가 잘못됨
-                // 원인 찾아서 수정하기
-                for(Node next : TicTacToeAI.possibleAction) {
-                    System.out.println("Curr option: point "+next.point);
-                    for (int i = 0; i < 3; i++) {
-                        for (int j = 0; j < 3; j++) {
-                            System.out.printf("%c ", next.map[i][j]);
-                        }
-                        System.out.println();
-                    }
-                    System.out.println();
-                }
                 for (Node next : TicTacToeAI.possibleAction) {
                     if (next.point == nextPoint) {
                         TicTacToeAI = next;
@@ -78,25 +66,19 @@ public class Main {
             turn++;
             clearConsole();
         }
-        // 이 인자대로라면 첫번쨰 수는 'O' 이어야 하는데 재귀때문에 한번 바뀌면서 `X`가 첫수
-        // 사용자에게 첫수 입력받으면 한번 돌려서 인자로 줘야할듯
-
-//        Node curr = TicTacToeAI;
-//        while(true) {
-//            System.out.println("Curr depth: "+curr.depth);
-//            System.out.println("Curr Point: "+curr.point);
-//            for(int i=0; i<3; i++) {
-//                for(int j=0; j<3; j++) {
-//                    System.out.printf("%c ", curr.map[i][j]);
-//                }
-//                System.out.println();
-//            }
-//            System.out.println();
-//            if(curr.possibleAction.size() == 0) {
-//                break;
-//            }
-//            curr = curr.possibleAction.get(0);
-//        }
+        renderMap();
+        int result = TicTacToeAI.point;
+        switch (result) {
+            case -10 :
+                System.out.println("Player Won!");
+                break;
+            case 0:
+                System.out.println("Draw! (Guess I've made good ai)");
+                break;
+            case 10:
+                System.out.println("AI Won!");
+                break;
+        }
     }
 
     public static void clearConsole() throws IOException {
