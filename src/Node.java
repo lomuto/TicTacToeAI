@@ -100,15 +100,18 @@ public class Node {
     }
 
     public static int getBestAction(Node node, char turn) {
+        // 재귀적인 구조에서 base 컨디션 설정 빼먹음
+        // 그래서 leaf case의 경우 draw라 0점이 나와야 함에도 불구하고 초기값인 -10 or 10 으로만 나옴
+        // 비교 variable의 초기값을 -10이나 10이 아닌 현재 노드의 그 point값으로 수정...
         if(node.turn == turn) {
-            int bestPoint = -10;
+            int bestPoint = node.point;
             for(Node nextAction : node.possibleAction) {
                 bestPoint = Integer.max(bestPoint,getBestAction(nextAction,turn));
             }
             node.point = bestPoint;
             return bestPoint;
         }
-        int worstPoint = 10;
+        int worstPoint = node.point;
         for(Node nextAction : node.possibleAction) {
             worstPoint = Integer.min(worstPoint,getBestAction(nextAction,turn));
         }
