@@ -7,7 +7,7 @@ public class Main {
     public static char user;
     public static char ai;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         init();
 
         Node TicTacToeAI;
@@ -81,12 +81,15 @@ public class Main {
         }
     }
 
-    public static void clearConsole() throws IOException {
-//        System.out.print("cls");
-//        System.out.flush();
+    public static void clearConsole() throws IOException, InterruptedException {
+//        final String os = System.getProperty("os.name");
+//        if (os.contains("Windows"))
+//            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+//        else
+//            Runtime.getRuntime().exec("clear");
     }
 
-    public static void init() throws IOException {
+    public static void init() throws IOException, InterruptedException {
         MAP = new char[3][3];
         String buffer;
         Scanner scanner = new Scanner(System.in);
